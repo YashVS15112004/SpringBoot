@@ -2,26 +2,61 @@ package com.luv2code.springboot.cruddemo.rest;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.luv2code.springboot.cruddemo.dao.EmployeeDAO;
 import com.luv2code.springboot.cruddemo.entity.Employee;
+import com.luv2code.springboot.cruddemo.service.EmployeeService;
 
 @RestController
 @RequestMapping("/api")
 public class EmployeeRestController {
-    private EmployeeDAO employeeDAO;
+    private EmployeeService employeeService;
 
-    public EmployeeRestController(EmployeeDAO thEmployeeDAO)
+    @Autowired
+    public EmployeeRestController(EmployeeService theEmployeeService)
     {
-        employeeDAO = thEmployeeDAO;
+        employeeService = theEmployeeService;
     }
 
     @GetMapping("/employees")
     public List<Employee> findAll()
     {
-        return employeeDAO.findAll();
+        return employeeService.findAll();
+    }
+
+    @GetMapping("/employees/{id}")
+    public Employee findById(@PathVariable int id)
+    {
+        Employee theEmployee = employeeService.findByID(id);
+        if(theEmployee == null) throw new RuntimeException("Employee with id "+" not found !");
+        return theEmployee;
+    }
+
+    @PostMapping("/employees")
+    public Employee addEmployee(@RequestBody Employee newEmployee)
+    {
+        newEmployee.setId(0);
+        return employeeService.save(newEmployee);
+    }
+
+    @PutMapping("/employees")
+    public Employee updateEmployee(@RequestBody Employee newEmployee)
+    {
+        return employeeService.save(newEmployee);
+    }
+
+    @DeleteMapping("/employees/{id}")
+    public void deleteEmployee(@PathVariable int id)
+    {
+        employeeService.delete(id);
+        System.out.println("Employee with id  "+ id + " deleted!");
     }
 }
