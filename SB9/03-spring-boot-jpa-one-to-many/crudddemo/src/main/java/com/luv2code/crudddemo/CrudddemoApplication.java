@@ -31,10 +31,11 @@ public class CrudddemoApplication {
 
 			//deleteInstructorDetailById(appDAO);
 
-			createInstructorWithCourses(appDAO);
+			//createInstructorWithCourses(appDAO);
+
+			findInstructorWithCourses(appDAO);
 		}; 
 	}
-
 
 	private void createInstructor(AppDAO appDAO) {
 		// create the instructor
@@ -130,5 +131,14 @@ public class CrudddemoApplication {
 		appDAO.save(tempInstructor1);
 
 		System.out.println("DONE!!!");
+	}
+
+	private void findInstructorWithCourses(AppDAO appDAO) {
+		int theId = 2;
+		System.out.println("Finding instructor Id : " + theId);
+		Instructor tempInstructor = appDAO.findInstructorById(theId);
+		System.out.println("TempInstructor : " + tempInstructor);
+		System.out.println("The associated courses : "+ tempInstructor.getCourses());
+		System.out.println("Done!!");
 	}
 }
