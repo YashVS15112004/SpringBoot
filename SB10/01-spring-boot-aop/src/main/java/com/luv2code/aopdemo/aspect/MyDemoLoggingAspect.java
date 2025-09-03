@@ -8,10 +8,16 @@ import org.aspectj.lang.annotation.Before;
 @Component
 public class MyDemoLoggingAspect {
 	
-    @Before("execution(public void addAccount())")
+    // @Before("execution(public void addAccount())")
+    // @Before("execution(public void com.luv2code.aopdemo.dao.AccountDAO.addAccount())")
+    // @Before("execution(public void add*())")
+    // @Before("execution(void add*())")
+    // @Before("execution(* add*())")
+    //@Before("execution(* add*(com.luv2code.aopdemo.Account,boolean))")
+    @Before("execution(* add*(com.luv2code.aopdemo.Account,..))")
     public void beforeAddAcountAdvice()
     {
-        System.out.println("\n===>>> Executing @Before advice on addAccount()");
+        System.out.println("\n===>>> Executing @Before advice on method");
     }
 
 }
