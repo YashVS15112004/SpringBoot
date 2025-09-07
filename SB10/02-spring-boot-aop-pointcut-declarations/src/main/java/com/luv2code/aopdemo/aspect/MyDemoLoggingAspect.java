@@ -29,20 +29,31 @@ public class MyDemoLoggingAspect {
     ) throws Throwable{
         // print out method we are advising on
         String method = theProceedingJoinPoint.getSignature().toShortString();
+
         System.out.println("\n=====>>>>> Executing @Around on method : "+ method);
 
         // get begin timestamp
-        long begin = System.currentTimeMillis();
+        // long begin = System.currentTimeMillis();
+        long begin = System.nanoTime();
 
         // now,lets execute the method
-        Object result = theProceedingJoinPoint.proceed();
+        Object result = null;
+        try{
+            result = theProceedingJoinPoint.proceed();
+        } 
+        catch(Exception exc)
+        {
+            System.out.println(exc.getMessage());
+            throw exc;
+        }
 
         // get end timestamp
-        long end = System.currentTimeMillis();
+        // long end = System.currentTimeMillis();
+        long end = System.nanoTime();
         
         // compute duration and display it
         long duration = end - begin; 
-        System.out.println("=====>>>>> Duration : " + duration/1000.0 + " seconds");
+        System.out.println("=====>>>>> Duration : " + duration + " nano-seconds");
         return result;
     }
 
